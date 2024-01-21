@@ -1,29 +1,34 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+
 
 
 function App() {
   const [length, setLength] = useState(8)
-  const [numberAllowed, setNumberAllowed] = useState(false);
-  const [charAllowed, setCharAllowed] = useState(false)
-  const [password, setPassword] = useState("")
+  const [numberAllowed, setnumberAllowed] = useState(false)
+  const [charAllowed, setcharAllowed] = useState(false)
+
+const [password, setPassword]=useState("");
+
 
 // useref hook
 const passwordRef=useRef(null);
 
 
-const  passwordGenerator= useCallback(()=>{
+const Generator=useCallback(()=>{
   let pass=""
   let str="ABCDEFGHIJKLMNOPQRSTUVWXYZasbcdefghijklmnopqrstuvwxyz"
   if(numberAllowed ) str  +=  "0123456789"
   if(charAllowed ) str  +=   "!@#$%^&*()`~{}[]\|?/ "
-
+  
   for(let i=1;i<=length;i++){
     let char= Math.floor(Math.random()*str.length+1)
     pass+= str.charAt(char);
-
+  // console.log("ji")
   }
   setPassword(pass)
-},[length,numberAllowed,charAllowed,setPassword])
+  
+},[length,numberAllowed,charAllowed]);
+
 
 
 const copyPasswordToClipBoard=useCallback(()=>{
@@ -35,10 +40,12 @@ passwordRef.current?.select();
 },[password])
 
 
-useEffect(() => {
-  passwordGenerator()
-}, [length, numberAllowed, charAllowed, passwordGenerator])
 
+
+
+useEffect(()=>{
+  Generator()
+},[length,numberAllowed,charAllowed,Generator])
 
 
   return (
@@ -47,14 +54,16 @@ useEffect(() => {
     <h1 className='text-white text-center my-3'> Password Generator</h1>
 <div className="flex shadow rounded-lg overflow-hidden mb-4 ">
   <input type="text"
-  value={password}
   className="outline-none w-full py-1 px-3"
   placeholder='Password'
-  readOnly
-  ref={passwordRef}
+value={password}
+ref={passwordRef}
+readOnly
+
   />
-<button onClick={copyPasswordToClipBoard} className='outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0'>Copy</button>
+<button className='outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0 ' onClick={copyPasswordToClipBoard }>Copy</button>
 </div>
+
 
 <div className="flex text-sm gap-x-2">
   <div className='flex items-center gap-x-1'>
@@ -72,7 +81,7 @@ useEffect(() => {
     type="checkbox"
     defaultChecked={numberAllowed}
     id="numberInput"
-    onChange={()=>{setNumberAllowed((prev)=>!prev)}}
+    onChange={()=>{setnumberAllowed((prev)=>!prev)}}
     />   <label>Numbers</label>
   </div>
 
@@ -81,16 +90,16 @@ useEffect(() => {
    type="checkbox"
    defaultChecked={charAllowed}
     className='cursor-pointer'
-    onChange={()=>{setCharAllowed((prev)=>!prev)}}
+    onChange={()=>{setcharAllowed((prev)=>!prev)}}
     />   <label>char</label>
   </div>
 
 </div>
 
-
   </div>
+
     </>
   )
 }
 
-export default App
+export default App;
