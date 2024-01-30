@@ -11,7 +11,6 @@ function App() {
   return (
     <UserContextProvider>
    <h1>React with Chai and donot Share </h1>
-
 <Login/>
 <Profile/>
 
